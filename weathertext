@@ -1,0 +1,51 @@
+#!/usr/bin/python
+
+import pywapi
+
+# Get the current conditions for the given station.
+noaa = pywapi.get_weather_from_noaa('KARR')
+yahoo = pywapi.get_weather_from_yahoo('60502', '')
+
+# The Yahoo pressure dictionary.
+ypressure = {'0': 'steady', '1': 'rising', '2': 'falling'}
+
+# This is the list of output lines.
+out = []
+
+# Go through the dictionaries and construct a list of the desired output lines.
+# out.append('Last update:' + noaa['observation_time'].split(',')[1])
+out.append('Sunlight: ' + yahoo['astronomy']['sunrise'] +  ' to ' + yahoo['astronomy']['sunset'])
+out.append(yahoo['condition']['text'])
+try:
+  gust = ', gusting to %s mph' % noaa['wind_gust_mph']
+except KeyError:
+  gust = ''
+out.append('Wind: %s at %s mph%s' % ( noaa['wind_dir'], noaa['wind_mph'], gust))
+out.append('Relative Humidity: %s%%' % noaa['relative_humidity'])
+out.append('Pressure: ' + yahoo['atmosphere']['pressure'] + ' and ' + ypressure[yahoo['atmosphere']['rising']])
+try:
+  out.append('Wind Chill: %s F' % noaa['windchill_f'])
+except KeyError:
+  pass
+try:
+  out.append('Heat Index: %s F' % noaa['heat_index_f'])
+except KeyError:
+  pass
+out.append('Temperature: %s F' % noaa['temp_f'])
+
+# Sometimes there's no heat index or windchill value (there should never be
+# both). If that's the case, add a blank line to the beginning so the output
+# is always 7 lines.
+
+if len(out) < 7:
+  out.insert(0, '')
+
+print '\n'.join(out)
+
+# For testing purposes, you can see the whole dictionary by uncommenting the
+# following 3 lines. This will also tell you all the dictionary keys. These lines
+# are basically stolen from the pywapi-noaa-example.py example code that comes
+# with pywapi.
+# import pprint
+# pp = pprint.PrettyPrinter(indent=4)
+# pp.pprint(w)
