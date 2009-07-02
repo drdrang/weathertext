@@ -14,7 +14,7 @@ out = []
 
 # Go through the dictionaries and construct a list of the desired output lines.
 # out.append('Last update:' + noaa['observation_time'].split(',')[1])
-out.append('Sunlight: ' + yahoo['astronomy']['sunrise'] +  ' to ' + yahoo['astronomy']['sunset'])
+out.append('Sunlight: %s to %s' % (yahoo['astronomy']['sunrise'], yahoo['astronomy']['sunset']))
 out.append(yahoo['condition']['text'])
 try:
   gust = ', gusting to %s mph' % noaa['wind_gust_mph']
