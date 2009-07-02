@@ -22,7 +22,7 @@ except KeyError:
   gust = ''
 out.append('Wind: %s at %s mph%s' % ( noaa['wind_dir'], noaa['wind_mph'], gust))
 out.append('Relative Humidity: %s%%' % noaa['relative_humidity'])
-out.append('Pressure: ' + yahoo['atmosphere']['pressure'] + ' and ' + ypressure[yahoo['atmosphere']['rising']])
+out.append('Pressure: %2.2f and %s' % (float(yahoo['atmosphere']['pressure']), ypressure[yahoo['atmosphere']['rising']]))
 try:
   out.append('Wind Chill: %s F' % noaa['windchill_f'])
 except KeyError:
