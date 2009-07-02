@@ -1,4 +1,4 @@
-`weathertext` is a short Python script that prints current weather information gathered from NOAA, Yahoo!, and/or Google via the [`pywapi` library][1]. It primary intent is to be called by [GeekTool][2] to display the information on the Mac desktop.
+`Weathertext` is a short Python script that prints current weather information gathered from NOAA, Yahoo!, and/or Google via the [`pywapi` library][1]. It primary intent is to be called by [GeekTool][2] to display the information on the Mac desktop.
 
 A longer description of the goals of `weathertext` and its use of `pywapi` can be found in [this blog post][3]. Here's how I have GeekTool configured to run `weathertext` every 15 minutes.
 
