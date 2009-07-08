@@ -41,11 +41,3 @@ if len(out) < 7:
   out.insert(0, '')
 
 print '\n'.join(out)
-
-# For testing purposes, you can see the whole dictionary by uncommenting the
-# following 3 lines. This will also tell you all the dictionary keys. These lines
-# are basically stolen from the pywapi-noaa-example.py example code that comes
-# with pywapi.
-# import pprint
-# pp = pprint.PrettyPrinter(indent=4)
-# pp.pprint(w)
