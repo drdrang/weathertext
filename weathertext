@@ -32,6 +32,15 @@ try:
 except KeyError:
   pass
 out.append('Temperature: %s F' % noaa['temp_f'])
-
+today = yahoo['forecasts'][0]
+tomorrow = yahoo['forecasts'][1]
+out.append('''Today:
+  High: %3d F
+  Low:  %3d F
+  %s''' % (int(today['high']), int(today['low']), today['text']))
+out.append('''Tomorrow:
+  High: %3d F
+  Low:  %3d F
+  %s''' % (int(tomorrow['high']), int(tomorrow['low']), tomorrow['text']))
 
 print '\n'.join(out)
