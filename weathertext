@@ -31,7 +31,7 @@ try:
   out.append('Heat Index: %s F' % noaa['heat_index_f'])
 except KeyError:
   pass
-out.append('Temperature: %s F' % noaa['temp_f'])
+out.append('Temperature: %.0f F' % float(noaa['temp_f']))
 today = yahoo['forecasts'][0]
 tomorrow = yahoo['forecasts'][1]
 out.append('''Today:
