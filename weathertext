@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import pywapi
 
@@ -24,23 +25,23 @@ out.append('Wind: %s at %s mph%s' % ( noaa['wind_dir'], noaa['wind_mph'], gust))
 out.append('Relative Humidity: %s%%' % noaa['relative_humidity'])
 out.append('Pressure: %2.2f and %s' % (float(yahoo['atmosphere']['pressure']), ypressure[yahoo['atmosphere']['rising']]))
 try:
-  out.append('Wind Chill: %s F' % noaa['windchill_f'])
+  out.append(u'Wind Chill: %s°' % noaa['windchill_f'])
 except KeyError:
   pass
 try:
-  out.append('Heat Index: %s F' % noaa['heat_index_f'])
+  out.append(u'Heat Index: %s°' % noaa['heat_index_f'])
 except KeyError:
   pass
-out.append('Temperature: %.0f F' % float(noaa['temp_f']))
+out.append(u'Temperature: %.0f°' % float(noaa['temp_f']))
 today = yahoo['forecasts'][0]
 tomorrow = yahoo['forecasts'][1]
-out.append('''Today:
-  High: %3d F
-  Low:  %3d F
+out.append(u'''Today:
+  High: %3d°
+  Low:  %3d°
   %s''' % (int(today['high']), int(today['low']), today['text']))
-out.append('''Tomorrow:
-  High: %3d F
-  Low:  %3d F
+out.append(u'''Tomorrow:
+  High: %3d°
+  Low:  %3d°
   %s''' % (int(tomorrow['high']), int(tomorrow['low']), tomorrow['text']))
 
-print '\n'.join(out)
+print '\n'.join(out).encode('utf8')
