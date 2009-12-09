@@ -33,11 +33,5 @@ except KeyError:
   pass
 out.append('Temperature: %s F' % noaa['temp_f'])
 
-# Sometimes there's no heat index or windchill value (there should never be
-# both). If that's the case, add a blank line to the beginning so the output
-# is always 7 lines.
-
-if len(out) < 7:
-  out.insert(0, '')
 
 print '\n'.join(out)
