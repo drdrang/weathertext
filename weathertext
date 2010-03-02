@@ -15,24 +15,24 @@ out = []
 
 # Go through the dictionaries and construct a list of the desired output lines.
 # out.append('Last update:' + noaa['observation_time'].split(',')[1])
-out.append('Sunlight: %s to %s' % (yahoo['astronomy']['sunrise'], yahoo['astronomy']['sunset']))
+out.append(u'Temperature: %.0f°' % float(noaa['temp_f']))
 out.append(yahoo['condition']['text'])
 try:
   gust = ', gusting to %s mph' % noaa['wind_gust_mph']
 except KeyError:
   gust = ''
 out.append('Wind: %s at %s mph%s' % ( noaa['wind_dir'], noaa['wind_mph'], gust))
-out.append('Relative Humidity: %s%%' % noaa['relative_humidity'])
-out.append('Pressure: %2.2f and %s' % (float(yahoo['atmosphere']['pressure']), ypressure[yahoo['atmosphere']['rising']]))
 try:
   out.append(u'Wind Chill: %s°' % noaa['windchill_f'])
 except KeyError:
   pass
+out.append('Relative Humidity: %s%%' % noaa['relative_humidity'])
 try:
   out.append(u'Heat Index: %s°' % noaa['heat_index_f'])
 except KeyError:
   pass
-out.append(u'Temperature: %.0f°' % float(noaa['temp_f']))
+out.append('Pressure: %2.2f and %s' % (float(yahoo['atmosphere']['pressure']), ypressure[yahoo['atmosphere']['rising']]))
+out.append('Sunlight: %s to %s' % (yahoo['astronomy']['sunrise'], yahoo['astronomy']['sunset']))
 today = yahoo['forecasts'][0]
 tomorrow = yahoo['forecasts'][1]
 out.append(u'''Today:
