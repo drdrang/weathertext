@@ -35,13 +35,15 @@ out.append('Pressure: %2.2f and %s' % (float(yahoo['atmosphere']['pressure']), y
 out.append('Sunlight: %s to %s' % (yahoo['astronomy']['sunrise'], yahoo['astronomy']['sunset']))
 today = yahoo['forecasts'][0]
 tomorrow = yahoo['forecasts'][1]
-out.append(u'''Today:
-  High: %3d°
-  Low:  %3d°
-  %s''' % (int(today['high']), int(today['low']), today['text']))
-out.append(u'''Tomorrow:
-  High: %3d°
-  Low:  %3d°
-  %s''' % (int(tomorrow['high']), int(tomorrow['low']), tomorrow['text']))
+out.append(u'''
+Today:
+- High: %3d°
+- Low:  %3d°
+- %s''' % (int(today['high']), int(today['low']), today['text']))
+out.append(u'''
+Tomorrow:
+- High: %3d°
+- Low:  %3d°
+- %s''' % (int(tomorrow['high']), int(tomorrow['low']), tomorrow['text']))
 
 print '\n'.join(out).encode('utf8')
