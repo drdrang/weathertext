@@ -2,6 +2,21 @@
 # -*- coding: utf-8 -*-
 
 import pywapi
+import datetime
+import getopt
+import sys
+
+# Handle the one option, -t.
+datestamp = False
+try:
+  opts, args = getopt.getopt(sys.argv[1:], 't')
+except getopt.GetoptError:
+  opts = ()
+for o, a in opts:
+  if o == '-t':
+    datestamp = True
+  else:
+    datestamp = False
 
 # Get the current conditions for the given station.
 noaa = pywapi.get_weather_from_noaa('KARR')
@@ -37,13 +52,17 @@ today = yahoo['forecasts'][0]
 tomorrow = yahoo['forecasts'][1]
 out.append(u'''
 Today:
-- High: %3d°
-- Low:  %3d°
-- %s''' % (int(today['high']), int(today['low']), today['text']))
+  High: %3d°
+  Low:  %3d°
+  %s''' % (int(today['high']), int(today['low']), today['text']))
 out.append(u'''
 Tomorrow:
-- High: %3d°
-- Low:  %3d°
-- %s''' % (int(tomorrow['high']), int(tomorrow['low']), tomorrow['text']))
+  High: %3d°
+  Low:  %3d°
+  %s''' % (int(tomorrow['high']), int(tomorrow['low']), tomorrow['text']))
 
+# Add the date and time if asked to.
+if datestamp:
+  out.append(datetime.datetime.now().strftime('\n%a, %b %d %I:%M %p'))
+  
 print '\n'.join(out).encode('utf8')
