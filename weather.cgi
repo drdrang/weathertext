@@ -2,16 +2,25 @@
 # -*- coding: utf-8 -*-
 
 import pywapi
+import datetime
+import re
 
 import cgitb
 cgitb.enable()
 
+# The date and time as a string. Note: My host's server is on Eastern Time
+# and I'm on Central Time, so I subtract an hour.
+now = datetime.datetime.now() - datetime.timedelta(hours=1)
+now = now.strftime("%a, %b %d %I:%M %p")
+# Delete leading zeros for day and hour.
+now = re.sub(r'0(\d )', r'\1', now)
+now = re.sub(r'0(\d:)', r'\1', now)
 
 # Get the current conditions for the given station.
 noaa = pywapi.get_weather_from_noaa('KARR')
 yahoo = pywapi.get_weather_from_yahoo('60502', '')
 
-# The Yahoo pressure dictionary.
+# Interpretation of the Yahoo pressure dictionary.
 ypressure = {'0': 'steady', '1': 'rising', '2': 'falling'}
 
 # Check for gusts.
@@ -20,18 +29,18 @@ try:
 except KeyError:
   gust = ''
   
-# The forecasts.
+# The forecasts
 today = yahoo['forecasts'][0]
 tomorrow = yahoo['forecasts'][1]
 
-# The content.
+# Assemble the content,.
 content = '''Content-type: text/html
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
 <meta name="viewport" content = "width = device-width" />
-<title>Weather</title>
+<title>Weather - %s</title>
 <style type="text/css">
   body { font-family: Helvetica;}
   h1 { font-size: 125%%;}
@@ -40,7 +49,7 @@ content = '''Content-type: text/html
 <body>
 <h1>Temperature: %.0f&deg;</h1>
 <p>%s<br />
-Wind: %s at %s mph%s<br />''' % (float(noaa['temp_f']), yahoo['condition']['text'], noaa['wind_dir'], noaa['wind_mph'], gust )
+Wind: %s at %s mph%s<br />''' % (now, float(noaa['temp_f']), yahoo['condition']['text'], noaa['wind_dir'], noaa['wind_mph'], gust )
 
 try:
   content += 'Wind Chill: %s&deg;<br />\n' % noaa['windchill_f']
