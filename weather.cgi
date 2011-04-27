@@ -58,7 +58,7 @@ content += 'Pressure: %s and %s<br />\n' % (float(yahoo['atmosphere']['pressure'
 
 content += 'Sunlight: %s to %s</p>\n' % (yahoo['astronomy']['sunrise'], yahoo['astronomy']['sunset'])
 
-content += '<p><img width="75%" src="http://i.imwx.com/web/radar/us_ord_ultraradar_plus_usen.jpg" /></p>\n'
+content += '<p><img width="100%" src="http://i.imwx.com/web/radar/us_ord_ultraradar_plus_usen.jpg" /></p>\n'
 
 content += '''<h1>Today</h1>
 <p>High: %s&deg;<br />
