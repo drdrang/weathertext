@@ -13,8 +13,8 @@ cgitb.enable()
 now = datetime.datetime.now() - datetime.timedelta(hours=1)
 now = now.strftime("%a, %b %d %I:%M %p")
 # Delete leading zeros for day and hour.
-now = re.sub(r'0(\d )', r'\1', now)
-now = re.sub(r'0(\d:)', r'\1', now)
+now = re.sub(r' 0(\d )', r' \1', now)   # day has a space before and after
+now = re.sub(r'0(\d:)', r'\1', now)     # hour has a colon after
 
 # Get the current conditions for the given station.
 noaa = pywapi.get_weather_from_noaa('KARR')
