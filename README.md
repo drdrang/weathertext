@@ -8,6 +8,14 @@ And here's a shell pipeline that puts the info in a Growl window:
 
 		~/bin/weathertext | /usr/local/bin/growlnotify -t Weather
 
+`Weather.cgi` is a Python script that does basically the same thing as `weathertext` but generates HTML intended for the iPhone instead of plain text. The main addition is a radar image set between the current conditions and the forecast.
+
+Both these scripts are customized for where I live but can be easily changed by edited the lines that set
+
+1. the NOAA station's name;
+2. the zip code for Yahoo! weather; and
+3. the URL for the radar image.
+
 [1]: http://code.google.com/p/python-weather-api/
 [2]: http://projects.tynsoe.org/en/geektool/
 [3]: http://www.leancrew.com/all-this/2009/06/new-weather-script-for-geektool/
