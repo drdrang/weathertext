@@ -21,8 +21,8 @@ import pywapi
 import datetime
 import re
 
-# import cgitb
-# cgitb.enable()
+import cgitb
+cgitb.enable()
 
 # The date and time as a string. Note: My host's server is on Eastern Time
 # and I'm on Central Time, so I subtract an hour.
@@ -39,11 +39,6 @@ yahoo = pywapi.get_weather_from_yahoo(zipcode, '')
 # Interpretation of the Yahoo pressure dictionary.
 ypressure = {'0': 'steady', '1': 'rising', '2': 'falling'}
 
-# Check for gusts.
-try:
-  gust = ', gusting to %s mph' % noaa['wind_gust_mph']
-except KeyError:
-  gust = ''
   
 # The forecasts
 today = yahoo['forecasts'][0]
@@ -58,14 +53,35 @@ content = '''Content-type: text/html
 <meta name="viewport" content = "width = device-width" />
 <title>Weather - %s</title>
 <style type="text/css">
-  body { font-family: Helvetica;}
-  h1 { font-size: 125%%;}
+  body { font-family: Helvetica; }
+  h1 { font-size: 200%%;
+    text-align: center;
+    margin-bottom: 0; }
+  h2 { font-size: 125%%;
+    margin-top: 0;
+    margin-bottom: 0; }
+  #now { margin-left: 0; }
+  #gust { padding-left: 2.75em; }
+  #today { clear:both;
+    float:left;
+    margin-left: 1em; }
+  #tomorrow { float:right;
+    margin-right: 2em; }
+  div p { margin-top: .25em;
+    margin-left: .25em; }
 </style>
 </head>
-<body>
-<h1>Temperature: %.0f&deg;</h1>
-<p>%s<br />
-Wind: %s at %s mph%s<br />''' % (now, float(noaa['temp_f']), yahoo['condition']['text'], noaa['wind_dir'], noaa['wind_mph'], gust )
+<body onload="setTimeout(function() { window.top.scrollTo(0, 1) }, 100);">
+<h1>%.0f&deg; &bull; %s </h1>''' % (now, float(noaa['temp_f']), yahoo['condition']['text'])
+
+content += '<p><img width="100%%" src="%s" /></p>\n' % radar
+
+content += '<p id="now">Wind: %s at %s mph<br />' % (noaa['wind_dir'], noaa['wind_mph'] )
+
+try:
+  content += '<span id="gust">Gusting to %s mph</span><br />\n' % noaa['wind_gust_mph']
+except KeyError:
+  pass
 
 try:
   content += 'Wind Chill: %s&deg;<br />\n' % noaa['windchill_f']
@@ -83,18 +99,16 @@ content += 'Pressure: %s and %s<br />\n' % (float(yahoo['atmosphere']['pressure'
 
 content += 'Sunlight: %s to %s</p>\n' % (yahoo['astronomy']['sunrise'], yahoo['astronomy']['sunset'])
 
-content += '<p><img width="100%%" src="%s" /></p>\n' % radar
-
-content += '''<h1>Today</h1>
+content += '''<div id="today"><h2>Today</h2>
 <p>High: %s&deg;<br />
 Low: %s&deg;<br />
-%s</p>
+%s</p></div>
 ''' % (int(today['high']), int(today['low']), today['text'])
 
-content += '''<h1>Tomorrow</h1>
+content += '''<div id="tomorrow"><h2>Tomorrow</h2>
 <p>High: %s&deg;<br />
 Low: %s&deg;<br />
-%s</p>
+%s</p></div>
 ''' % (int(tomorrow['high']), int(tomorrow['low']), tomorrow['text'])
 
 content += '''</body>
