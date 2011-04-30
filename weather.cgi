@@ -54,7 +54,7 @@ content = '''Content-type: text/html
 <title>Weather - %s</title>
 <style type="text/css">
   body { font-family: Helvetica; }
-  h1 { font-size: 200%%;
+  h1 { font-size: 175%%;
     text-align: center;
     margin-bottom: 0; }
   h2 { font-size: 125%%;
@@ -62,11 +62,6 @@ content = '''Content-type: text/html
     margin-bottom: 0; }
   #now { margin-left: 0; }
   #gust { padding-left: 2.75em; }
-  #today { clear:both;
-    float:left;
-    margin-left: 1em; }
-  #tomorrow { float:right;
-    margin-right: 2em; }
   div p { margin-top: .25em;
     margin-left: .25em; }
 </style>
