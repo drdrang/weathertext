@@ -5,6 +5,7 @@ import pywapi
 import datetime
 import getopt
 import sys
+import re
 
 # Handle the one option, -t.
 datestamp = False
@@ -18,12 +19,27 @@ for o, a in opts:
   else:
     datestamp = False
 
+# The date as a string. This is for comparison with forecast dates.
+today = datetime.datetime.now() - datetime.timedelta(hours=1)
+today = today.strftime("%d %b %Y")
+today = re.sub(r'^0(\d)', r'\1', today)   # delete leading zero on day
+
 # Get the current conditions for the given station.
 noaa = pywapi.get_weather_from_noaa('KARR')
 yahoo = pywapi.get_weather_from_yahoo('60502', '')
 
 # The Yahoo pressure dictionary.
 ypressure = {'0': 'steady', '1': 'rising', '2': 'falling'}
+
+# The forecasts
+f1 = yahoo['forecasts'][0]
+f2 = yahoo['forecasts'][1]
+if f1['date'] == today:
+  f1str = 'Today'
+  f2str = 'Tomorrow'
+else:
+  f1str = 'Tomorrow'
+  f2str = 'Next day'
 
 # This is the list of output lines.
 out = []
@@ -48,18 +64,16 @@ except KeyError:
   pass
 out.append('Pressure: %2.2f and %s' % (float(yahoo['atmosphere']['pressure']), ypressure[yahoo['atmosphere']['rising']]))
 out.append('Sunlight: %s to %s' % (yahoo['astronomy']['sunrise'], yahoo['astronomy']['sunset']))
-today = yahoo['forecasts'][0]
-tomorrow = yahoo['forecasts'][1]
 out.append(u'''
-Today:
+%s:
   High: %3d°
   Low:  %3d°
-  %s''' % (int(today['high']), int(today['low']), today['text']))
+  %s''' % (f1str, int(f1['high']), int(f1['low']), f1['text']))
 out.append(u'''
-Tomorrow:
+%s:
   High: %3d°
   Low:  %3d°
-  %s''' % (int(tomorrow['high']), int(tomorrow['low']), tomorrow['text']))
+  %s''' % (f2str, int(f2['high']), int(f2['low']), f2['text']))
 
 # Add the date and time if asked to.
 if datestamp:
