@@ -32,6 +32,12 @@ now = now.strftime("%a, %b %d %I:%M %p")
 now = re.sub(r' 0(\d )', r' \1', now)   # day has a space before and after
 now = re.sub(r'0(\d:)', r'\1', now)     # hour has a colon after
 
+# The date as a string. This is for comparison with forecast dates.
+today = datetime.datetime.now() - datetime.timedelta(hours=1)
+today = today.strftime("%d %b %Y")
+today = re.sub(r'^0(\d)', r'\1', today)   # delete leading zero on day
+
+
 # Get the current conditions for the given station.
 noaa = pywapi.get_weather_from_noaa(station)
 yahoo = pywapi.get_weather_from_yahoo(zipcode, '')
@@ -41,8 +47,14 @@ ypressure = {'0': 'steady', '1': 'rising', '2': 'falling'}
 
   
 # The forecasts
-today = yahoo['forecasts'][0]
-tomorrow = yahoo['forecasts'][1]
+f1 = yahoo['forecasts'][0]
+f2 = yahoo['forecasts'][1]
+if f1['date'] == today:
+  f1str = 'Today'
+  f2str = 'Tomorrow'
+else:
+  f1str = 'Tomorrow'
+  f2str = 'Next day'
 
 # Assemble the content,.
 content = '''Content-type: text/html
@@ -94,17 +106,17 @@ content += 'Pressure: %s and %s<br />\n' % (float(yahoo['atmosphere']['pressure'
 
 content += 'Sunlight: %s to %s</p>\n' % (yahoo['astronomy']['sunrise'], yahoo['astronomy']['sunset'])
 
-content += '''<div id="today"><h2>Today</h2>
+content += '''<div id="f1"><h2>%s</h2>
 <p>High: %s&deg;<br />
 Low: %s&deg;<br />
 %s</p></div>
-''' % (int(today['high']), int(today['low']), today['text'])
+''' % (f1str, int(f1['high']), int(f1['low']), f1['text'])
 
-content += '''<div id="tomorrow"><h2>Tomorrow</h2>
+content += '''<div id="f2"><h2>%s</h2>
 <p>High: %s&deg;<br />
 Low: %s&deg;<br />
 %s</p></div>
-''' % (int(tomorrow['high']), int(tomorrow['low']), tomorrow['text'])
+''' % (f2str, int(f2['high']), int(f2['low']), f2['text'])
 
 content += '''</body>
 </html>'''
