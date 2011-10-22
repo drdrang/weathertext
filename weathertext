@@ -49,7 +49,10 @@ out = []
 out.append(u'Temperature: %.0f°' % float(noaa['temp_f']))
 out.append(yahoo['condition']['text'])
 try:
-  gust = ', gusting to %s mph' % noaa['wind_gust_mph']
+  if float(noaa['wind_gust_mph']) > 0:
+    gust = ', gusting to %s mph' % noaa['wind_gust_mph']
+  else:
+    gust = ''
 except KeyError:
   gust = ''
 out.append('Wind: %s at %s mph%s' % ( noaa['wind_dir'], noaa['wind_mph'], gust))

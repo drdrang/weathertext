@@ -86,7 +86,8 @@ content += '<p><img width="100%%" src="%s" /></p>\n' % radar
 content += '<p id="now">Wind: %s at %s mph<br />' % (noaa['wind_dir'], noaa['wind_mph'] )
 
 try:
-  content += '<span id="gust">Gusting to %s mph</span><br />\n' % noaa['wind_gust_mph']
+  if float(noaa['wind_gust_mph']) > 0:
+    content += '<span id="gust">Gusting to %s mph</span><br />\n' % noaa['wind_gust_mph']
 except KeyError:
   pass
 
