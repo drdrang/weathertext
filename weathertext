@@ -21,8 +21,8 @@ for o, a in opts:
 
 # The date as a string. This is for comparison with forecast dates.
 today = datetime.datetime.now() - datetime.timedelta(hours=1)
-today = today.strftime("%d %b %Y")
-today = re.sub(r'^0(\d)', r'\1', today)   # delete leading zero on day
+today = today.strftime("%-d %b %Y")
+# today = re.sub(r'^0(\d)', r'\1', today)   # delete leading zero on day
 
 # Get the current conditions for the given station.
 noaa = pywapi.get_weather_from_noaa('KARR')
