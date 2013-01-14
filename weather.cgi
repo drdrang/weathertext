@@ -27,15 +27,15 @@ cgitb.enable()
 # The date and time as a string. Note: My host's server is on Eastern Time
 # and I'm on Central Time, so I subtract an hour.
 now = datetime.datetime.now() - datetime.timedelta(hours=1)
-now = now.strftime("%a, %b %d %I:%M %p")
+now = now.strftime("%a, %b %-d %-I:%M %p")
 # Delete leading zeros for day and hour.
-now = re.sub(r' 0(\d )', r' \1', now)   # day has a space before and after
-now = re.sub(r'0(\d:)', r'\1', now)     # hour has a colon after
+# now = re.sub(r' 0(\d )', r' \1', now)   # day has a space before and after
+# now = re.sub(r'0(\d:)', r'\1', now)     # hour has a colon after
 
 # The date as a string. This is for comparison with forecast dates.
 today = datetime.datetime.now() - datetime.timedelta(hours=1)
-today = today.strftime("%d %b %Y")
-today = re.sub(r'^0(\d)', r'\1', today)   # delete leading zero on day
+today = today.strftime("%-d %b %Y")
+# today = re.sub(r'^0(\d)', r'\1', today)   # delete leading zero on day
 
 
 # Get the current conditions for the given station.
