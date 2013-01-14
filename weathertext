@@ -60,7 +60,10 @@ try:
   out.append(u'Wind Chill: %s°' % noaa['windchill_f'])
 except KeyError:
   pass
-out.append('Relative Humidity: %s%%' % noaa['relative_humidity'])
+try:
+  out.append('Relative Humidity: %s%%' % noaa['relative_humidity'])
+except KeyError:
+  pass
 try:
   out.append(u'Heat Index: %s°' % noaa['heat_index_f'])
 except KeyError:
@@ -81,5 +84,5 @@ out.append(u'''
 # Add the date and time if asked to.
 if datestamp:
   out.append(datetime.datetime.now().strftime('\n%a, %b %d %I:%M %p'))
-  
+
 print '\n'.join(out).encode('utf8')
